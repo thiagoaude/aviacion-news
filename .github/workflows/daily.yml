@@ -1,0 +1,44 @@
+name: Daily News Fetcher
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # 11:00 UTC = 8:00 ARG daily
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Fetch news
+        env:
+          AI_PROVIDER: ${{ secrets.AI_PROVIDER || 'anthropic' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SEARCH_ENGINE: ${{ secrets.SEARCH_ENGINE || 'duckduckgo' }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: python news_fetcher.py
+
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "📰 Update news"
+          file_pattern: news.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

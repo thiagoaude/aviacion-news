@@ -1,0 +1,29 @@
+{
+  "fecha": "2026-04-19",
+  "aviacion_argentina": [
+    {
+      "titulo": "ANAC emite nueva resolución sobre procedimientos de aproximación",
+      "origen": "ANAC Argentina",
+      "resumen": "La Autoridad Nacional de Aviación Civil publicó une circular técnica con actualizaciones para procedimientos de aproximación en aeropuertos de categoria 2.",
+      "fecha_noticia": "2026-04-18"
+    }
+  ],
+  "aviacion_mundial": [
+    {
+      "titulo": "EASA actualiza guidelines de seguridad para sistemas de gestión",
+      "origen": "EASA",
+      "resumen": "Nueva circular sobre gestion de riesgos en operaciones aerocomerciales dentro del espacio europeo.",
+      "fecha_noticia": "2026-04-18"
+    }
+  ],
+  "ia": [
+    {
+      "titulo": "Anthropic lanza Claude Sonnet 4.5",
+      "origen": "Anthropic",
+      "resumen": "Nueva version del modelo con mejores capacidades de razonamiento y contexto extendido.",
+      "fecha_noticia": "2026-04-18"
+    }
+  ],
+  "frase_diaria": "El vuelo perfecto es resultado de prep aración perfecta.",
+  "chiste": "¿Qué le dice un piloto al controlador? Buenas noches. ¿Qué dice el controlador cuando el piloto dice que tiene frío? Enciende el aire acondicionado, estás volando a 35.000 pies"
+}
