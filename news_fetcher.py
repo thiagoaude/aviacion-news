@@ -339,22 +339,28 @@ def main():
         news_data = fetch_with_ai(search_results)
     else:
         print("Modo: Búsqueda directa (sin IA)")
-        from duckduckgo import DDGS
-        d = DDGS()
-        news_data = {"fecha": fecha, "aviacion_argentina": [], "aviacion_mundial": [], "ia": [], "frase_diaria": "", "chiste": ""}
+        search_results = search_all()
+        news_data = {
+            "fecha": fecha,
+            "aviacion_argentina": [],
+            "aviacion_mundial": [],
+            "espacio": [],
+            "meteoro": [],
+            "ia": [],
+            "tecnologia": [],
+            "frase_diaria": "La excelencia no es un acto, es un hábito.",
+            "chiste": "¿Qué hace un piloto que no puede dormir? ¡Dale vuelta al colchón!"
+        }
 
-        for cat, queries in SEARCH_QUERIES.items():
-            for q in queries:
-                try:
-                    for r in d.text(q, max_results=3):
-                        news_data[cat].append({
-                            "titulo": r.title,
-                            "origen": r.url.split("/")[2] if r.url else "web",
-                            "resumen": r.body[:150] if r.body else "",
-                            "fecha_noticia": fecha
-                        })
-                except Exception as e:
-                    print(f"Error: {e}")
+        for cat, items in search_results.items():
+            for item in items[:10]:
+                news_data[cat].append({
+                    "titulo": item.get("title", "")[:150],
+                    "origen": item.get("url", "").split("/")[2] if item.get("url") else "web",
+                    "resumen": item.get("content", "")[:300],
+                    "link": item.get("url", ""),
+                    "fecha_noticia": fecha
+                })
 
     if news_data:
         with open(NEWS_JSON_PATH, "w", encoding="utf-8") as f:
