@@ -9,7 +9,7 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 COPILOT_API_KEY = os.environ.get("COPILOT_API_KEY")
 
-SEARCH_ENGINE = os.environ.get("SEARCH_ENGINE", "tavily")
+SEARCH_ENGINE = os.environ.get("SEARCH_ENGINE", "duckduckgo")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
 SERPER_API_KEY = os.environ.get("SERPER_API_KEY")
@@ -93,8 +93,8 @@ SEARCH_QUERIES = {
         "visibility airports",
         "hurricane aviation",
         "volcanic ash aviation",
-        "weather delays",
-        " storm,
+"weather delays",
+        "storm aviation",
         "front fría aviation",
         "presión atmosférica",
         "altura nubes",
