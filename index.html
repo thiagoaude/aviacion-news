@@ -62,6 +62,12 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .total-news {
+            color: var(--accent-mundial);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
         .frase-card, .chiste-card {
             background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
             border: 1px solid var(--border);
@@ -108,6 +114,11 @@
         .mun .section-title::before { background: var(--accent-mundial); }
         .ia .section-title::before { background: var(--accent-ia); }
         .tech .section-title::before { background: #f97316; }
+        .espacio .section-title::before { background: #06b6d4; }
+        .meteoro .section-title::before { background: #0ea5e9; }
+
+        .espacio .news-origen { color: #06b6d4; }
+        .meteoro .news-origen { color: #0ea5e9; }
 
         .news-section {
             margin-bottom: 2rem;
@@ -159,6 +170,14 @@
 
         .leer-mas:hover {
             text-decoration: underline;
+        }
+
+        .news-count {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 1rem;
+            font-weight: 400;
         }
 
         .news-origen {
@@ -248,6 +267,7 @@
         <header>
             <h1>Aviación News</h1>
             <p class="fecha" id="fecha-display"></p>
+            <p class="total-news" id="total-news"></p>
         </header>
 
         <div class="frase-card" id="frase-section" style="display:none;">
@@ -265,22 +285,50 @@
 
         <div id="news-content" style="display:none;">
             <section class="news-section arg">
-                <h2 class="section-title">Aviación Argentina</h2>
+                <h2 class="section-title">
+                    <span>Aviación Argentina</span>
+                    <span class="news-count" id="arg-count"></span>
+                </h2>
                 <div id="arg-list"></div>
             </section>
 
             <section class="news-section mun">
-                <h2 class="section-title">Aviación Mundial</h2>
+                <h2 class="section-title">
+                    <span>Aviación Mundial</span>
+                    <span class="news-count" id="mun-count"></span>
+                </h2>
                 <div id="mun-list"></div>
             </section>
 
+            <section class="news-section espacio">
+                <h2 class="section-title">
+                    <span>Espacio + Defensa</span>
+                    <span class="news-count" id="espacio-count"></span>
+                </h2>
+                <div id="espacio-list"></div>
+            </section>
+
+            <section class="news-section meteoro">
+                <h2 class="section-title">
+                    <span>Meteorología</span>
+                    <span class="news-count" id="meteoro-count"></span>
+                </h2>
+                <div id="meteoro-list"></div>
+            </section>
+
             <section class="news-section ia">
-                <h2 class="section-title">Inteligencia Artificial</h2>
+                <h2 class="section-title">
+                    <span>Inteligencia Artificial</span>
+                    <span class="news-count" id="ia-count"></span>
+                </h2>
                 <div id="ia-list"></div>
             </section>
 
             <section class="news-section tech">
-                <h2 class="section-title">Tecnología</h2>
+                <h2 class="section-title">
+                    <span>Tecnología</span>
+                    <span class="news-count" id="tech-count"></span>
+                </h2>
                 <div id="tech-list"></div>
             </section>
         </div>
@@ -313,10 +361,22 @@
                     document.getElementById('chiste-text').textContent = data.chiste;
                 }
 
-                renderNews('arg-list', data.aviacion_argentina || []);
-                renderNews('mun-list', data.aviacion_mundial || []);
-                renderNews('ia-list', data.ia || []);
-                renderNews('tech-list', data.tecnologia || []);
+                renderNews('arg-list', data.aviacion_argentina || [], 'arg-count');
+                renderNews('mun-list', data.aviacion_mundial || [], 'mun-count');
+                renderNews('ia-list', data.ia || [], 'ia-count');
+                renderNews('tech-list', data.tecnologia || [], 'tech-count');
+                renderNews('espacio-list', data.espacio || [], 'espacio-count');
+                renderNews('meteoro-list', data.meteoro || [], 'meteoro-count');
+
+                const total = (data.aviacion_argentina?.length || 0) +
+                           (data.aviacion_mundial?.length || 0) +
+                           (data.ia?.length || 0) +
+                           (data.tecnologia?.length || 0) +
+                           (data.espacio?.length || 0) +
+                           (data.meteoro?.length || 0);
+                if (total > 0) {
+                    document.getElementById('total-news').textContent = `${total} noticias hoy`;
+                }
 
                 loading.style.display = 'none';
                 newsContent.style.display = 'block';
@@ -327,12 +387,16 @@
             }
         }
 
-        function renderNews(containerId, news) {
+        function renderNews(containerId, news, countId) {
             const container = document.getElementById(containerId);
+            const countEl = document.getElementById(countId);
             if (!news || news.length === 0) {
                 container.innerHTML = '<p style="color:var(--text-muted);padding:1rem;">Sin noticias</p>';
+                if (countEl) countEl.textContent = '(0)';
                 return;
             }
+
+            if (countEl) countEl.textContent = `(${news.length})`;
 
             container.innerHTML = news.map(item => `
                 <article class="news-card">

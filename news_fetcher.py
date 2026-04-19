@@ -18,44 +18,136 @@ NEWS_JSON_PATH = os.environ.get("NEWS_JSON_PATH", "news.json")
 
 SEARCH_QUERIES = {
     "argentina": [
-        "site:anac.gob.ar Argentina aviación",
-        "site:orsna.gov.ar aeropuertos Argentina",
+        "site:anac.gob.ar Argentina aviación 2026",
+        "site:orsna.gov.ar aeropuertos Argentina 2026",
         "site:aerolineas.com.ar Aerolíneas Argentinas",
-        "site:flybondi.com noticias",
+        "site:flybondi.com",
         "site:jetsmart.com Argentina",
-        "aeropuerto Ezeiza noticias 2026",
-        "aeropuerto Jorge Newbery noticias",
-        "AA2000 aeropuertosArgentina",
-        "ANAC resolución circular técnica",
+        "aeropuerto Ezeiza",
+        "aeropuerto Jorge Newbery",
+        "AA2000 aeropuertos Argentina",
+        "ANAC resolución circular",
         "transito aereo Argentina",
+        "jetSMART Argentina rutas",
+        "Flybondi vuelos",
+        "sistema aérea Argentina",
+        "torre control Ezeiza",
+        "aeropuertos Argentina obras",
+        "tráfico aéreo Argentina",
+        "lineas aereas Argentina",
+        "naviero Argentina",
+        "combustible aviación Argentina",
+        "Aeroclub Argentina",
     ],
     "mundial": [
-        "EASA safety bulletin aviation",
-        "FAA aviation news today",
-        "IATA airline industry news",
-        "Airbus Boeing Embraer news",
-        "ICAO aviation news",
-        "aeropuertos internacionales noticias",
-        "aviação comercial latinoamerica",
-        "LATAM Aeromexico Volaris news",
+        "EASA safety bulletin aviation 2026",
+        "FAA aviation news 2026",
+        "IATA airline industry news 2026",
+        "Airbus news 2026",
+        "Boeing news 2026",
+        "Embraer news 2026",
+        "ICAO aviation 2026",
+        "aeropuertos internacionales",
+        "LATAM airlines news",
+        "aeroméxico volaris",
         "airline on-time performance",
-        "aviation safety report 2026",
+        "aviation safety report",
+        "plane crash investigation",
+        "airline routes changes",
+        "airport construction",
+        "air traffic control news",
+        "pilot shortage aviation",
+        "airline revenue profit",
+        "aviation fuel prices",
+        "airline mergers acquisitions",
+    ],
+    "espacio": [
+        "NASA news 2026",
+        "SpaceX news 2026",
+        "SpaceX Starlink launch",
+        "Blue Origin news 2026",
+        "ESA European Space Agency",
+        "satellite launch 2026",
+        "China space program",
+        "space station ISS",
+        "Artemis NASA",
+        "Mars mission 2026",
+        "rocket launch 2026",
+        "satélite comunicaciones",
+        "spaceX Starship",
+        "astronaut news",
+        "space tourism",
+        "defensa aerial Argentina",
+        "fuerza área Argentina",
+        "avión militar 2026",
+        "drone militar",
+        "radar defensa",
+    ],
+    "meteoro": [
+        "METAR TAF meteorología",
+        "viento jet stream",
+        "tormenta volcano",
+        "clima aviación",
+        "wind shear",
+        "icing aviation",
+        "visibility airports",
+        "hurricane aviation",
+        "volcanic ash aviation",
+        "weather delays",
+        " storm,
+        "front fría aviation",
+        "presión atmosférica",
+        "altura nubes",
+        "visibilidad vuelo",
+        "meteorología aeronautica",
+        "pronóstico vuelo",
+        "clima Argentina",
+        "SMN Argentina clima",
+        "frente frío Argentina",
     ],
     "ia": [
-        "OpenAI ChatGPT news",
-        "Anthropic Claude news",
-        "Google DeepMind Gemini",
+        "OpenAI ChatGPT 2026",
+        "Anthropic Claude 2026",
+        "Google Gemini DeepMind",
         "Microsoft Copilot AI",
-        "xAI Grok news",
-        "modelo AI nuevo anuncio",
-        "AI regulation policy 2026",
-        "artificial intelligence breakthroughs",
+        "xAI Grok",
+        "modelo AI nuevo",
+        "AI regulation policy",
+        "artificial intelligence",
+        "AI model training",
+        "LLM new version",
+        "AI video generation",
+        "AI image generation",
+        "AI code assistant",
+        "AI startup funding",
+        "AI chip NVIDIA",
+        "AI safety research",
+        "AI benchmarks",
+        "multimodal AI",
+        "AIagents automation",
+        "Sora AI video",
     ],
     "tecnologia": [
-        "tecnología aviación nuevos sistemas",
-        "天空 internet WiFi aviones",
-        "avionica innovate",
-        "drones regulation",
+        "tecnología aviación",
+        "WiFi avión internet",
+        "aviónica new systems",
+        "drones regulation 2026",
+        "eVTOL aircraft",
+        "aircraft entertainment",
+        "seat technology",
+        "fuel efficiency aviation",
+        "sustainable aviation fuel",
+        "electric aircraft",
+        "hydrogen aircraft",
+        "carbon emissions aviation",
+        "aviation biometrics",
+        "digital tower control",
+        "skywise airbus",
+        " Boeing analytics",
+        " predictive maintenance",
+        "aircraft health monitoring",
+        "3D printing aircraft",
+        "composites airplane",
     ]
 }
 
@@ -133,10 +225,13 @@ def do_search(query):
         return []
 
 def search_all():
-    results = {"argentina": [], "mundial": [], "ia": [], "tecnologia": []}
+    results = {
+        "argentina": [], "mundial": [], "espacio": [],
+        "meteoro": [], "ia": [], "tecnologia": []
+    }
     for category, queries in SEARCH_QUERIES.items():
         for q in queries:
-            print(f"Buscando: {q}")
+            print(f"Buscando [{category}]: {q}")
             results[category].extend(do_search(q))
     return results
 
@@ -149,34 +244,38 @@ def fetch_with_ai(search_results):
         for item in items[:5]:
             search_text.append(f"- {item['title']}: {item['content'][:200]}")
 
-    prompt = f"""Sos un asistente de noticias. Hoy es {fecha}.
+    prompt = f"""Sos un asistente de noticias especializado en AVIACIÓN, ESPACIO y IA. Hoy es {fecha}.
 
-BUSQUEDAS REALIZADAS:
+BUSQUEDAS REALIZADAS ({{len(search_text)}} items):
 {{"".join(search_text)}}
 
 TU TRABAJO - SELECCIONÁ LAS MEJORES NOTICIAS:
-1. Máximo 10 noticias importantes por categoría (argentina, mundial, ia, tecnologia)
-2. Cada noticia debe incluir:
-   - titulo: título de la noticia
-   - origen: fuente (ej: ANAC, EASA, OpenAI)
-   - resumen: descripción de 2-3 oraciones, sustancial
-   - link: URL de la noticia
+1. EXACTAMENTE 20 noticias importantes por categoría
+2. Categorías: argentina, mundial, espacio, meteoro, ia, tecnologia
+3. Cada noticia debe incluir:
+   - titulo: título claro y conciso
+   - origen: fuente (ej: ANAC, EASA, NASA, OpenAI)
+   - resumen: descripción sustancial de 2-3 oraciones
+   - link: URL real de la noticia
    - fecha_noticia: fecha de la noticia
-3. Agregá una frase diaria inspiradora (máx 20 palabras)
-4. Agregá un chiste corto de aviación
+4. Las noticias deben ser las MÁS IMPORTANTES de las últimas 24-48hs
+5. Frase diaria inspiradora (máx 15 palabras)
+6. Chiste corto de aviación
 
-FORMATO JSON exacto:
+FORMATO JSON EXACTO (máx 4000 tokens):
 {{
   "fecha": "{fecha}",
   "aviacion_argentina": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
   "aviacion_mundial": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
+  "espacio": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
+  "meteoro": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
   "ia": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
   "tecnologia": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
   "frase_diaria": "...",
   "chiste": "..."
 }}
 
-Respondé SOLO con el JSON, sin texto adicional."""
+Respondé SOLO con el JSON válido, sin texto adicional."""
 
     provider = AI_PROVIDER.lower()
 
