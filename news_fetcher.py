@@ -18,18 +18,44 @@ NEWS_JSON_PATH = os.environ.get("NEWS_JSON_PATH", "news.json")
 
 SEARCH_QUERIES = {
     "argentina": [
-        "site:anac.gob.ar Argentina aviación 2026",
-        "site:orsna.gov.ar aeropuertos Argentina 2026",
-        "Aerolíneas ArgentinasFlybondi JetSmart noticias 2026",
+        "site:anac.gob.ar Argentina aviación",
+        "site:orsna.gov.ar aeropuertos Argentina",
+        "site:aerolineas.com.ar Aerolíneas Argentinas",
+        "site:flybondi.com noticias",
+        "site:jetsmart.com Argentina",
+        "aeropuerto Ezeiza noticias 2026",
+        "aeropuerto Jorge Newbery noticias",
+        "AA2000 aeropuertosArgentina",
+        "ANAC resolución circular técnica",
+        "transito aereo Argentina",
     ],
     "mundial": [
-        "EASA safety bulletin aviation 2026",
-        "FAA aviation news 2026",
-        "IATA airline industry news 2026",
+        "EASA safety bulletin aviation",
+        "FAA aviation news today",
+        "IATA airline industry news",
+        "Airbus Boeing Embraer news",
+        "ICAO aviation news",
+        "aeropuertos internacionales noticias",
+        "aviação comercial latinoamerica",
+        "LATAM Aeromexico Volaris news",
+        "airline on-time performance",
+        "aviation safety report 2026",
     ],
     "ia": [
-        "OpenAI Anthropic Google DeepMind news 2026",
-        "AI modelo nuovo announcements 2026",
+        "OpenAI ChatGPT news",
+        "Anthropic Claude news",
+        "Google DeepMind Gemini",
+        "Microsoft Copilot AI",
+        "xAI Grok news",
+        "modelo AI nuevo anuncio",
+        "AI regulation policy 2026",
+        "artificial intelligence breakthroughs",
+    ],
+    "tecnologia": [
+        "tecnología aviación nuevos sistemas",
+        "天空 internet WiFi aviones",
+        "avionica innovate",
+        "drones regulation",
     ]
 }
 
@@ -107,7 +133,7 @@ def do_search(query):
         return []
 
 def search_all():
-    results = {"argentina": [], "mundial": [], "ia": []}
+    results = {"argentina": [], "mundial": [], "ia": [], "tecnologia": []}
     for category, queries in SEARCH_QUERIES.items():
         for q in queries:
             print(f"Buscando: {q}")
@@ -128,24 +154,29 @@ def fetch_with_ai(search_results):
 BUSQUEDAS REALIZADAS:
 {{"".join(search_text)}}
 
-TU TRABAJO:
-1. Seleccioná las 3-5 noticias más importantes de cada categoría
-2. Para cada noticia: título, origen (del URL), resumen breve (1-2 oraciones)
-3. Máx 5 noticias por categoría
-4. Agregá una frase diaria inspiradora (máx 20 palabras)
-5. Agregá un chiste corto de aviación
+TU TRABAJO - SELECCIONÁ LAS MEJORES NOTICIAS:
+1. Máximo 10 noticias importantes por categoría (argentina, mundial, ia, tecnologia)
+2. Cada noticia debe incluir:
+   - titulo: título de la noticia
+   - origen: fuente (ej: ANAC, EASA, OpenAI)
+   - resumen: descripción de 2-3 oraciones, sustancial
+   - link: URL de la noticia
+   - fecha_noticia: fecha de la noticia
+3. Agregá una frase diaria inspiradora (máx 20 palabras)
+4. Agregá un chiste corto de aviación
 
 FORMATO JSON exacto:
 {{
   "fecha": "{fecha}",
-  "aviacion_argentina": [{{"titulo": "...", "origen": "...", "resumen": "...", "fecha_noticia": "{fecha}"}}],
-  "aviacion_mundial": [{{"titulo": "...", "origen": "...", "resumen": "...", "fecha_noticia": "{fecha}"}}],
-  "ia": [{{"titulo": "...", "origen": "...", "resumen": "...", "fecha_noticia": "{fecha}"}}],
+  "aviacion_argentina": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
+  "aviacion_mundial": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
+  "ia": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
+  "tecnologia": [{{"titulo": "...", "origen": "...", "resumen": "...", "link": "...", "fecha_noticia": "{fecha}"}}],
   "frase_diaria": "...",
   "chiste": "..."
 }}
 
-Respondé SOLO con el JSON."""
+Respondé SOLO con el JSON, sin texto adicional."""
 
     provider = AI_PROVIDER.lower()
 

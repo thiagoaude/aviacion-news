@@ -107,6 +107,7 @@
         .arg .section-title::before { background: var(--accent-arg); }
         .mun .section-title::before { background: var(--accent-mundial); }
         .ia .section-title::before { background: var(--accent-ia); }
+        .tech .section-title::before { background: #f97316; }
 
         .news-section {
             margin-bottom: 2rem;
@@ -127,6 +128,11 @@
             transform: translateY(-2px);
         }
 
+        .news-card a {
+            color: inherit;
+            text-decoration: none;
+        }
+
         .news-title {
             font-size: 1rem;
             font-weight: 500;
@@ -138,8 +144,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
             font-size: 0.75rem;
             color: var(--text-muted);
+        }
+
+        .leer-mas {
+            font-size: 0.7rem;
+            color: var(--accent-mundial);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .leer-mas:hover {
+            text-decoration: underline;
         }
 
         .news-origen {
@@ -152,6 +171,8 @@
         .arg .news-origen { color: var(--accent-arg); }
         .mun .news-origen { color: var(--accent-mundial); }
         .ia .news-origen { color: var(--accent-ia); }
+        .tech .news-origen { color: #f97316; }
+        .tech .section-title::before { background: #f97316; }
 
         .news-resumen {
             font-size: 0.875rem;
@@ -257,6 +278,11 @@
                 <h2 class="section-title">Inteligencia Artificial</h2>
                 <div id="ia-list"></div>
             </section>
+
+            <section class="news-section tech">
+                <h2 class="section-title">Tecnología</h2>
+                <div id="tech-list"></div>
+            </section>
         </div>
 
         <div class="last-updated" id="updated"></div>
@@ -290,6 +316,7 @@
                 renderNews('arg-list', data.aviacion_argentina || []);
                 renderNews('mun-list', data.aviacion_mundial || []);
                 renderNews('ia-list', data.ia || []);
+                renderNews('tech-list', data.tecnologia || []);
 
                 loading.style.display = 'none';
                 newsContent.style.display = 'block';
@@ -309,10 +336,13 @@
 
             container.innerHTML = news.map(item => `
                 <article class="news-card">
+                    ${item.link ? `<a href="${item.link}" target="_blank" rel="noopener">` : ''}
                     <h3 class="news-title">${item.titulo || ''}</h3>
+                    ${item.link ? '</a>' : ''}
                     <div class="news-meta">
                         <span class="news-origen">${item.origen || ''}</span>
                         <span>${item.fecha_noticia || ''}</span>
+                        ${item.link ? `<a href="${item.link}" target="_blank" class="leer-mas">leer más →</a>` : ''}
                     </div>
                     <p class="news-resumen">${item.resumen || ''}</p>
                 </article>
